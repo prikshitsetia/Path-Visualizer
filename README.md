@@ -1,3 +1,6 @@
+# Path Visualizer
+This is the path visualizer made by clementmihaliescu (https://github.com/clementmihailescu/Pathfinding-Visualizer-Tutorial)
+But I'll be adding new featured to it along with some code refinning for Dijkstra's algorithm
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
