@@ -4,10 +4,10 @@ import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 import "./PathfindingVisualizer.css";
 
-const START_NODE_ROW = 10;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
+let START_NODE_ROW = 10;
+let START_NODE_COL = 15;
+let FINISH_NODE_ROW = 10;
+let FINISH_NODE_COL = 35;
 
 export default class PathfindingVisualizer extends Component {
   constructor() {
@@ -15,6 +15,7 @@ export default class PathfindingVisualizer extends Component {
     this.state = {
       grid: [],
       mouseIsPressed: false,
+      isStartNodeClicked: false,
     };
   }
 
@@ -24,18 +25,37 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
-    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-    this.setState({ grid: newGrid, mouseIsPressed: true });
+    if (row == START_NODE_ROW && col == START_NODE_COL) {
+      const newGrid = getNewGridWithStartToggled(this.state.grid, row, col);
+      this.setState({ grid: newGrid, isStartNodeClicked: true });
+    } else {
+      const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+      this.setState({ grid: newGrid, mouseIsPressed: true });
+    }
   }
 
   handleMouseEnter(row, col) {
     if (!this.state.mouseIsPressed) return;
-    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-    this.setState({ grid: newGrid });
+
+    if (!this.state.isStartNodeClicked) {
+      const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+      this.setState({ grid: newGrid });
+    }
   }
 
-  handleMouseUp() {
-    this.setState({ mouseIsPressed: false });
+  handleMouseUp(row, col) {
+    if (this.state.isStartNodeClicked) {
+      const newGrid = getNewGridWithStartToggled(this.state.grid, row, col);
+      this.setState({
+        grid: newGrid,
+        isStartNodeClicked: false,
+        mouseIsPressed: false,
+      });
+      START_NODE_ROW = row;
+      START_NODE_COL = col;
+    } else {
+      this.setState({ isStartNodeClicked: false, mouseIsPressed: false });
+    }
   }
 
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -99,7 +119,7 @@ export default class PathfindingVisualizer extends Component {
                       onMouseEnter={(row, col) =>
                         this.handleMouseEnter(row, col)
                       }
-                      onMouseUp={() => this.handleMouseUp()}
+                      onMouseUp={() => this.handleMouseUp(row, col)}
                       row={row}
                     ></Node>
                   );
@@ -144,6 +164,16 @@ const getNewGridWithWallToggled = (grid, row, col) => {
   const newNode = {
     ...node,
     isWall: !node.isWall,
+  };
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+const getNewGridWithStartToggled = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isStart: !node.isStart,
   };
   newGrid[row][col] = newNode;
   return newGrid;
