@@ -6,14 +6,13 @@ export default class Node extends Component {
   render() {
     const {
       col,
-      isStartNodeDrag,
-      isEndNodeDrag,
       isFinish,
       isStart,
       isWall,
       onMouseDown,
       onMouseEnter,
       onMouseUp,
+      onClick,
       row,
     } = this.props;
     const extraClassName = isFinish
@@ -31,6 +30,7 @@ export default class Node extends Component {
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp(row, col)}
+        onClick={() => onClick(row, col)}
       ></div>
     );
   }

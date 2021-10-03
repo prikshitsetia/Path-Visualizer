@@ -16,6 +16,7 @@ export default class PathfindingVisualizer extends Component {
       grid: [],
       mouseIsPressed: false,
       isStartNodeClicked: false,
+      isFinishNodeClicked: false,
     };
   }
 
@@ -25,10 +26,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
-    if (row == START_NODE_ROW && col == START_NODE_COL) {
-      const newGrid = getNewGridWithStartToggled(this.state.grid, row, col);
-      this.setState({ grid: newGrid, isStartNodeClicked: true });
-    } else {
+    if (!this.state.isStartNodeClicked) {
       const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
       this.setState({ grid: newGrid, mouseIsPressed: true });
     }
@@ -36,16 +34,15 @@ export default class PathfindingVisualizer extends Component {
 
   handleMouseEnter(row, col) {
     if (!this.state.mouseIsPressed) return;
-
     if (!this.state.isStartNodeClicked) {
       const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
       this.setState({ grid: newGrid });
     }
   }
 
-  handleMouseUp(row, col) {
+  handleMouseClick(row, col) {
     if (this.state.isStartNodeClicked) {
-      const newGrid = getNewGridWithStartToggled(this.state.grid, row, col);
+      const newGrid = getNewGridWithChangedStartNode(this.state.grid, row, col);
       this.setState({
         grid: newGrid,
         isStartNodeClicked: false,
@@ -53,9 +50,31 @@ export default class PathfindingVisualizer extends Component {
       });
       START_NODE_ROW = row;
       START_NODE_COL = col;
+    } else if (this.state.isFinishNodeClicked) {
+      const newGrid = getNewGridWithChangedFinishNode(
+        this.state.grid,
+        row,
+        col
+      );
+      this.setState({
+        grid: newGrid,
+        isFinishNodeClicked: false,
+        mouseIsPressed: false,
+      });
+      FINISH_NODE_ROW = row;
+      FINISH_NODE_COL = col;
     } else {
-      this.setState({ isStartNodeClicked: false, mouseIsPressed: false });
+      if (row === START_NODE_ROW && col === START_NODE_COL) {
+        this.setState({ isStartNodeClicked: true, mouseIsPressed: false });
+      } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
+        this.setState({ isFinishNodeClicked: true, mouseIsPressed: false });
+      }
     }
+  }
+  handleMouseUp(row, col) {
+    this.setState({
+      mouseIsPressed: false,
+    });
   }
 
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -121,6 +140,7 @@ export default class PathfindingVisualizer extends Component {
                       }
                       onMouseUp={() => this.handleMouseUp(row, col)}
                       row={row}
+                      onClick={() => this.handleMouseClick(row, col)}
                     ></Node>
                   );
                 })}
@@ -168,13 +188,39 @@ const getNewGridWithWallToggled = (grid, row, col) => {
   newGrid[row][col] = newNode;
   return newGrid;
 };
-const getNewGridWithStartToggled = (grid, row, col) => {
+const getNewGridWithChangedStartNode = (grid, row, col) => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
   const newNode = {
     ...node,
-    isStart: !node.isStart,
+    isStart: true,
+    isWall: false,
   };
+  const previousStart = newGrid[START_NODE_ROW][START_NODE_COL];
+  const newPrevNod = {
+    ...previousStart,
+    isStart: false,
+    isWall: false,
+  };
+  newGrid[START_NODE_ROW][START_NODE_COL] = newPrevNod;
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+const getNewGridWithChangedFinishNode = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isFinish: true,
+    isWall: false,
+  };
+  const previousStart = newGrid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  const newPrevNod = {
+    ...previousStart,
+    isFinish: false,
+    isWall: false,
+  };
+  newGrid[FINISH_NODE_ROW][FINISH_NODE_COL] = newPrevNod;
   newGrid[row][col] = newNode;
   return newGrid;
 };
