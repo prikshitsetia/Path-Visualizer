@@ -76,7 +76,23 @@ export default class PathfindingVisualizer extends Component {
       mouseIsPressed: false,
     });
   }
-
+  clearBoard() {
+    const newGrid = getInitialGrid();
+    for (let row = 0; row < 20; row++) {
+      for (let col = 0; col < 50; col++) {
+        if (row === START_NODE_ROW && col === START_NODE_COL) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-start";
+        } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-finish";
+        } else {
+          document.getElementById(`node-${row}-${col}`).className = "node";
+        }
+      }
+    }
+    this.setState({ grid: newGrid });
+  }
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -120,6 +136,7 @@ export default class PathfindingVisualizer extends Component {
         <button onClick={() => this.visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
         </button>
+        <button onClick={() => this.clearBoard()}>Clear Board</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
