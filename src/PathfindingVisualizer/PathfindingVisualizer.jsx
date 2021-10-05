@@ -76,7 +76,7 @@ export default class PathfindingVisualizer extends Component {
       mouseIsPressed: false,
     });
   }
-  clearBoard() {
+  resetBoard() {
     const newGrid = getInitialGrid();
     for (let row = 0; row < 20; row++) {
       for (let col = 0; col < 50; col++) {
@@ -92,6 +92,24 @@ export default class PathfindingVisualizer extends Component {
       }
     }
     this.setState({ grid: newGrid });
+  }
+  clearPath() {
+    this.state.grid.forEach((item, row) => {
+      item.forEach((element, col) => {
+        if (row === START_NODE_ROW && col === START_NODE_COL) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-start";
+        } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-finish";
+        } else if (element.isWall) {
+          element.isVisited = false;
+        } else if (element.isVisited) {
+          document.getElementById(`node-${row}-${col}`).className = "node";
+          element.isVisited = false;
+        }
+      });
+    });
   }
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
@@ -136,7 +154,9 @@ export default class PathfindingVisualizer extends Component {
         <button onClick={() => this.visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
         </button>
-        <button onClick={() => this.clearBoard()}>Clear Board</button>
+        <button onClick={() => this.resetBoard()}>Reset Board</button>
+        <button onClick={() => this.clearPath()}>Clear Path</button>
+
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
