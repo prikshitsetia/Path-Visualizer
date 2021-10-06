@@ -8,7 +8,7 @@ let START_NODE_ROW = 10;
 let START_NODE_COL = 15;
 let FINISH_NODE_ROW = 10;
 let FINISH_NODE_COL = 35;
-
+let speed = 10;
 export default class PathfindingVisualizer extends Component {
   constructor() {
     super();
@@ -116,14 +116,14 @@ export default class PathfindingVisualizer extends Component {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
-        }, 10 * i);
+        }, speed * i);
         return;
       }
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-visited";
-      }, 10 * i);
+      }, speed * i);
     }
   }
 
@@ -133,7 +133,7 @@ export default class PathfindingVisualizer extends Component {
         const node = nodesInShortestPathOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-shortest-path";
-      }, 50 * i);
+      }, speed * i * 2);
     }
   }
 
@@ -144,6 +144,15 @@ export default class PathfindingVisualizer extends Component {
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+  speedHandler(e) {
+    if (e.target.value === "fast") {
+      speed = 10;
+    } else if (e.target.value === "average") {
+      speed = 20;
+    } else {
+      speed = 40;
+    }
   }
 
   render() {
@@ -156,7 +165,17 @@ export default class PathfindingVisualizer extends Component {
         </button>
         <button onClick={() => this.resetBoard()}>Reset Board</button>
         <button onClick={() => this.clearPath()}>Clear Path</button>
-
+        <select
+          name="speed"
+          id="speedList"
+          onChange={(e) => this.speedHandler(e)}
+        >
+          <option selected value="fast">
+            Fast
+          </option>
+           <option value="average">Average</option>
+          <option value="slow">Slow</option>
+        </select>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
