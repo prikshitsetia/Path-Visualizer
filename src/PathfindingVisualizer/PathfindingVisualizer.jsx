@@ -160,22 +160,49 @@ export default class PathfindingVisualizer extends Component {
 
     return (
       <>
-        <button onClick={() => this.visualizeDijkstra()}>
-          Visualize Dijkstra's Algorithm
-        </button>
-        <button onClick={() => this.resetBoard()}>Reset Board</button>
-        <button onClick={() => this.clearPath()}>Clear Path</button>
-        <select
-          name="speed"
-          id="speedList"
-          onChange={(e) => this.speedHandler(e)}
-        >
-          <option selected value="fast">
-            Fast
-          </option>
-           <option value="average">Average</option>
-          <option value="slow">Slow</option>
-        </select>
+        <nav className="main-nav">
+          <div className="logo">
+            <h2>
+              <span>P</span>ath <span>V</span>isualizer
+            </h2>
+          </div>
+          <div className="menu-link">
+            <ul>
+              <li>
+                <button
+                  className="button"
+                  onClick={() => this.visualizeDijkstra()}
+                >
+                  Visualize Dijkstra's Algorithm
+                </button>
+              </li>
+              <li>
+                <button className="button" onClick={() => this.resetBoard()}>
+                  Reset Board
+                </button>
+              </li>{" "}
+              <li>
+                <button className="button" onClick={() => this.clearPath()}>
+                  Clear Path
+                </button>
+              </li>{" "}
+              <li>
+                <select
+                  name="speed"
+                  id="speedList"
+                  onChange={(e) => this.speedHandler(e)}
+                >
+                  <option selected value="fast">
+                    Fast
+                  </option>
+                   <option value="average">Average</option>
+                  <option value="slow">Slow</option>
+                </select>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
