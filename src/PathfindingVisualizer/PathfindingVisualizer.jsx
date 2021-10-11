@@ -9,13 +9,16 @@ let START_NODE_COL = 15;
 let FINISH_NODE_ROW = 10;
 let FINISH_NODE_COL = 35;
 let speed = 10;
+
 export default class PathfindingVisualizer extends Component {
   constructor() {
     super();
+
     this.state = {
       grid: [],
       mouseIsPressed: false,
       isStartNodeClicked: false,
+      isVisualizing: false,
       isFinishNodeClicked: false,
     };
   }
@@ -94,22 +97,27 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid: newGrid });
   }
   clearPath() {
-    this.state.grid.forEach((item, row) => {
-      item.forEach((element, col) => {
+    let newGrid = getInitialGrid();
+    for (let row = 0; row < 20; row++) {
+      for (let col = 0; col < 50; col++) {
         if (row === START_NODE_ROW && col === START_NODE_COL) {
           document.getElementById(`node-${row}-${col}`).className =
             "node node-start";
         } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
           document.getElementById(`node-${row}-${col}`).className =
             "node node-finish";
-        } else if (element.isWall) {
-          element.isVisited = false;
-        } else if (element.isVisited) {
+        } else if (this.state.grid[row][col].isWall) {
+          document.getElementById(`node-${row}-${col}`).className =
+            "node node-wall";
+          newGrid[row][col].isWall = true;
+          newGrid[row][col].isVisited = false;
+        } else if (this.state.grid[row][col].isVisited) {
           document.getElementById(`node-${row}-${col}`).className = "node";
-          element.isVisited = false;
+          newGrid[row][col].isVisited = false;
         }
-      });
-    });
+      }
+    }
+    this.setState({ grid: newGrid });
   }
   animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
@@ -135,9 +143,11 @@ export default class PathfindingVisualizer extends Component {
           "node node-shortest-path";
       }, speed * i * 2);
     }
+    this.setState({ isVisualizing: false });
   }
 
   visualizeDijkstra() {
+    this.setState({ isVisualizing: true });
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -172,17 +182,26 @@ export default class PathfindingVisualizer extends Component {
                 <button
                   className="button"
                   onClick={() => this.visualizeDijkstra()}
+                  disabled={this.state.isVisualizing}
                 >
                   Visualize Dijkstra's Algorithm
                 </button>
               </li>
               <li>
-                <button className="button" onClick={() => this.resetBoard()}>
+                <button
+                  disabled={this.state.isVisualizing}
+                  className="button"
+                  onClick={() => this.resetBoard()}
+                >
                   Reset Board
                 </button>
               </li>{" "}
               <li>
-                <button className="button" onClick={() => this.clearPath()}>
+                <button
+                  disabled={this.state.isVisualizing}
+                  className="button"
+                  onClick={() => this.clearPath()}
+                >
                   Clear Path
                 </button>
               </li>{" "}
