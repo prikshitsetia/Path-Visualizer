@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Node from "./Node/Node";
-import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
+import { dijkstra } from "../algorithms/dijkstra";
+import { bfs } from "../algorithms/bfs";
 
 import "./PathfindingVisualizer.css";
 
@@ -119,7 +120,8 @@ export default class PathfindingVisualizer extends Component {
     }
     this.setState({ grid: newGrid });
   }
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  animateAlgo(visitedNodesInOrder, nodesInShortestPathOrder) {
+    console.log(visitedNodesInOrder);
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -146,14 +148,27 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ isVisualizing: false });
   }
 
-  visualizeDijkstra() {
+  visualizeAlgo(event) {
+    const algo = event.target.value;
     this.setState({ isVisualizing: true });
     const { grid } = this.state;
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    let visitedNodesInOrder = null;
+
+    switch (algo) {
+      case "dijkstra":
+        visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        break;
+      case "bfs":
+        visitedNodesInOrder = bfs(grid, startNode, finishNode);
+        console.log(visitedNodesInOrder);
+        break;
+      default:
+        break;
+    }
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animateAlgo(visitedNodesInOrder, nodesInShortestPathOrder);
   }
   speedHandler(e) {
     if (e.target.value === "fast") {
@@ -179,13 +194,16 @@ export default class PathfindingVisualizer extends Component {
           <div className="menu-link">
             <ul>
               <li>
-                <button
-                  className="button"
-                  onClick={() => this.visualizeDijkstra()}
-                  disabled={this.state.isVisualizing}
+                <select
+                  name="algo"
+                  id="algoList"
+                  onChange={(e) => this.visualizeAlgo(e)}
                 >
-                  Visualize Dijkstra's Algorithm
-                </button>
+                  <option selected value="dijkstra">
+                    Dijkstra
+                  </option>
+                   <option value="bfs">BFS</option>
+                </select>
               </li>
               <li>
                 <button
@@ -326,3 +344,12 @@ const getNewGridWithChangedFinishNode = (grid, row, col) => {
   newGrid[row][col] = newNode;
   return newGrid;
 };
+function getNodesInShortestPathOrder(finishNode) {
+  const nodesInShortestPathOrder = [];
+  let currentNode = finishNode;
+  while (currentNode !== null) {
+    nodesInShortestPathOrder.unshift(currentNode);
+    currentNode = currentNode.previousNode;
+  }
+  return nodesInShortestPathOrder;
+}
