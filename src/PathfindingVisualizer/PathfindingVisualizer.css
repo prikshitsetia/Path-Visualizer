@@ -36,6 +36,7 @@ button:disabled {
   grid-template-columns: 10rem 1fr 2fr 1fr 10rem;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  background-color: #396eb0;
 }
 
 .logo {
@@ -63,7 +64,7 @@ button:disabled {
   font-size: 2.5rem;
   font-weight: 400;
   text-transform: uppercase;
-  background: -webkit-linear-gradient(#eee, rgb(69, 57, 248));
+  background: white;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -78,7 +79,7 @@ button:disabled {
 
 .menu-link ul li button {
   text-transform: capitalize;
-  color: rgba(0, 0, 3, 0.8);
+  color: white;
   transition: 0.5s;
 }
 
@@ -95,4 +96,7 @@ button:disabled {
   border: none;
   cursor: pointer;
   overflow: hidden;
+}
+.grid {
+  background-color: #daddfc;
 }
