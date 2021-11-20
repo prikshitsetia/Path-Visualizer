@@ -121,7 +121,6 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid: newGrid });
   }
   animateAlgo(visitedNodesInOrder, nodesInShortestPathOrder) {
-    console.log(visitedNodesInOrder);
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -162,7 +161,6 @@ export default class PathfindingVisualizer extends Component {
         break;
       case "bfs":
         visitedNodesInOrder = bfs(grid, startNode, finishNode);
-        console.log(visitedNodesInOrder);
         break;
       default:
         break;
@@ -198,11 +196,10 @@ export default class PathfindingVisualizer extends Component {
                   name="algo"
                   id="algoList"
                   onChange={(e) => this.visualizeAlgo(e)}
+                  disabled={this.state.isVisualizing}
                 >
-                  <option selected value="dijkstra">
-                    Dijkstra
-                  </option>
-                   <option value="bfs">BFS</option>
+                  <option value="dijkstra">Dijkstra</option> 
+                  <option value="bfs">BFS</option>
                 </select>
               </li>
               <li>

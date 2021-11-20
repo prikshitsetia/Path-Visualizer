@@ -15,7 +15,6 @@ export function bfs(grid, startNode, finishNode) {
 
     if (grid[x][y].isFinish) {
       visitedNodesInOrder.push(currentNode);
-      console.log(visitedNodesInOrder.length);
       return visitedNodesInOrder;
     }
     queue.shift();
@@ -30,7 +29,7 @@ export function bfs(grid, startNode, finishNode) {
     }
     visitedNodesInOrder.push(currentNode);
   }
-  console.log(visitedNodesInOrder);
+  return visitedNodesInOrder;
 }
 function isValid(grid, row, col) {
   if (row < 0 || col < 0 || row >= grid.length || col >= grid[0].length) {
