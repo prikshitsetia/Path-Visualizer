@@ -1,7 +1,6 @@
 # Path Visualizer
 
-This is the path visualizer made by clementmihaliescu (https://github.com/clementmihailescu/Pathfinding-Visualizer-Tutorial)
-But I'll be adding new features to it along with some code refinning for Dijkstra's algorithm
+This Project can help user visualize shortest path finding algorithms. It contains visualization for Dijkstras and BFS algorithms. You can also click on any empty grid element and drag the mouse to draw wall nodes and choose the algoithm you want to see how it works.
 
 # Getting Started with Create React App
 
