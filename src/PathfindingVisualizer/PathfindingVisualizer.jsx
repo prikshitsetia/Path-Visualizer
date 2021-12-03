@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Node from "./Node/Node";
 import { dijkstra } from "../algorithms/dijkstra";
 import { bfs } from "../algorithms/bfs";
+import { dfs } from "../algorithms/dfs";
 
 import "./PathfindingVisualizer.css";
 
@@ -162,6 +163,8 @@ export default class PathfindingVisualizer extends Component {
       case "bfs":
         visitedNodesInOrder = bfs(grid, startNode, finishNode);
         break;
+      case "dfs":
+        visitedNodesInOrder = dfs(grid, startNode, finishNode);
       default:
         break;
     }
@@ -200,6 +203,7 @@ export default class PathfindingVisualizer extends Component {
                 >
                   <option value="dijkstra">Dijkstra</option> 
                   <option value="bfs">BFS</option>
+                  <option value="dfs">DFS</option>
                 </select>
               </li>
               <li>
