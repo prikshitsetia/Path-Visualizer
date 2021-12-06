@@ -16,17 +16,17 @@ export function dfs(grid, startNode, finishNode) {
     var col = curr.col;
 
     if (curr === finishNode) {
-      grid[row][col].isVisited = true;
-      visitedNodesInOrder.push(curr);
+      //[row][col].isVisited = true;
+      //visitedNodesInOrder.push(curr);
       return visitedNodesInOrder;
     }
+    grid[row][col].isVisited = true;
 
     for (var i = 0; i < 4; i++) {
       var adjx = row + dRow[i];
       var adjy = col + dCol[i];
       if (isValid(grid, adjx, adjy)) {
         st.push(grid[adjx][adjy]);
-        grid[adjx][adjy].isVisited = true;
         grid[adjx][adjy].previousNode = curr;
       }
     }
