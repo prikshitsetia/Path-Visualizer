@@ -3,6 +3,7 @@ import Node from "./Node/Node";
 import { dijkstra } from "../algorithms/dijkstra";
 import { bfs } from "../algorithms/bfs";
 import { dfs } from "../algorithms/dfs";
+import { astar } from "../algorithms/astar";
 
 import "./PathfindingVisualizer.css";
 
@@ -165,6 +166,10 @@ export default class PathfindingVisualizer extends Component {
         break;
       case "dfs":
         visitedNodesInOrder = dfs(grid, startNode, finishNode);
+        break;
+      case "A*":
+        visitedNodesInOrder = astar(grid, startNode, finishNode);
+        break;
       default:
         break;
     }
@@ -203,7 +208,8 @@ export default class PathfindingVisualizer extends Component {
                 >
                   <option value="dijkstra">Dijkstra</option> 
                   <option value="bfs">BFS</option>
-                  <option value="dfs">DFS</option>
+                  <option value="dfs">DFS (Not a shortest path)</option>
+                  <option value="A*">A*</option>
                 </select>
               </li>
               <li>
@@ -296,6 +302,9 @@ const createNode = (col, row) => {
     isVisited: false,
     isWall: false,
     previousNode: null,
+    g: 0,
+    f: 0,
+    h: 0,
   };
 };
 

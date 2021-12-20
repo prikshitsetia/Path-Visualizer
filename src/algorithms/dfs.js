@@ -16,8 +16,6 @@ export function dfs(grid, startNode, finishNode) {
     var col = curr.col;
 
     if (curr === finishNode) {
-      //[row][col].isVisited = true;
-      //visitedNodesInOrder.push(curr);
       return visitedNodesInOrder;
     }
     grid[row][col].isVisited = true;

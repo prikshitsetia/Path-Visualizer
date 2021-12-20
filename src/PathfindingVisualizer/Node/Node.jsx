@@ -14,6 +14,9 @@ export default class Node extends Component {
       onMouseUp,
       onClick,
       row,
+      g,
+      f,
+      h,
     } = this.props;
     const extraClassName = isFinish
       ? "node-finish"
