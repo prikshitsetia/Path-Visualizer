@@ -1,7 +1,7 @@
 var openSet = [];
 var closedSet = [];
-const dRow = [-1, 0, 1, 0];
-const dCol = [0, 1, 0, -1];
+const dRow = [0, 0, 1, -1];
+const dCol = [1, -1, 0, 0];
 var visitedNodesInOrder = [];
 
 function heuristic(a, b) {
@@ -13,6 +13,7 @@ function heuristic(a, b) {
 export function astar(grid, startNode, finishNode) {
   openSet.push(startNode);
   visitedNodesInOrder.push(startNode);
+  startNode.isVisited = true;
   while (openSet.length > 0) {
     //get minimum
     var winner = 0;
@@ -56,7 +57,6 @@ export function astar(grid, startNode, finishNode) {
             openSet.push(grid[adjx][adjy]);
           }
           grid[adjx][adjy].isVisited = true;
-
           grid[adjx][adjy].h = heuristic(grid[adjx][adjy], finishNode);
           grid[adjx][adjy].f = grid[adjx][adjy].g + grid[adjx][adjy].h;
           grid[adjx][adjy].previousNode = current;
@@ -68,9 +68,6 @@ export function astar(grid, startNode, finishNode) {
 }
 function isValid(grid, row, col) {
   if (row < 0 || col < 0 || row >= grid.length || col >= grid[0].length) {
-    return false;
-  }
-  if (grid[row][col].isVisited) {
     return false;
   }
   if (grid[row][col].isWall) return false;

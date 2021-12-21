@@ -178,7 +178,7 @@ export default class PathfindingVisualizer extends Component {
   }
   speedHandler(e) {
     if (e.target.value === "fast") {
-      speed = 10;
+      speed = 5;
     } else if (e.target.value === "average") {
       speed = 20;
     } else {
