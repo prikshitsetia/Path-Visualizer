@@ -7,10 +7,10 @@ import { astar } from "../algorithms/astar";
 
 import "./PathfindingVisualizer.css";
 
-let START_NODE_ROW = 10;
-let START_NODE_COL = 15;
-let FINISH_NODE_ROW = 10;
-let FINISH_NODE_COL = 35;
+var START_NODE_ROW = 10;
+var START_NODE_COL = 15;
+var FINISH_NODE_ROW = 10;
+var FINISH_NODE_COL = 35;
 let speed = 10;
 
 export default class PathfindingVisualizer extends Component {
@@ -185,7 +185,23 @@ export default class PathfindingVisualizer extends Component {
       speed = 40;
     }
   }
-
+  addRandomWall() {
+    let newGrid = getInitialGrid();
+    for (let row = 0; row < 20; row++) {
+      for (let col = 0; col < 50; col++) {
+        if (row === START_NODE_ROW && col === START_NODE_COL) {
+          continue;
+        } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
+          continue;
+        } else {
+          if (Math.random() < 0.3) {
+            newGrid[row][col].isWall = true;
+          }
+        }
+      }
+    }
+    this.setState({ grid: newGrid });
+  }
   render() {
     const { grid, mouseIsPressed } = this.state;
 
@@ -209,7 +225,7 @@ export default class PathfindingVisualizer extends Component {
                   <option value="dijkstra">Dijkstra</option> 
                   <option value="bfs">BFS</option>
                   <option value="dfs">DFS (Not a shortest path)</option>
-                  <option value="A*">A*</option>
+                  <option value="A*">A* Search</option>
                 </select>
               </li>
               <li>
@@ -228,6 +244,15 @@ export default class PathfindingVisualizer extends Component {
                   onClick={() => this.clearPath()}
                 >
                   Clear Path
+                </button>
+              </li>{" "}
+              <li>
+                <button
+                  disabled={this.state.isVisualizing}
+                  className="button"
+                  onClick={() => this.addRandomWall()}
+                >
+                  Random Wall
                 </button>
               </li>{" "}
               <li>

@@ -1,19 +1,19 @@
-var openSet = [];
-var closedSet = [];
-const dRow = [0, 0, 1, -1];
-const dCol = [1, -1, 0, 0];
-var visitedNodesInOrder = [];
+const dRow = [-1, 0, 1, 0, -1, 1, -1, 1];
+const dCol = [0, 1, 0, -1, -1, -1, 1, 1];
 
 function heuristic(a, b) {
-  let x = b.row - a.row;
-  let y = b.col - a.col;
-  return Math.sqrt(x * x - y * y);
+  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
 
 export function astar(grid, startNode, finishNode) {
-  openSet.push(startNode);
-  visitedNodesInOrder.push(startNode);
-  startNode.isVisited = true;
+  let visitedNodesInOrder = [];
+  let openSet = [];
+  let closedSet = [];
+
+  openSet.push(grid[startNode.row][startNode.col]);
+  visitedNodesInOrder.push(grid[startNode.row][startNode.col]);
+  grid[startNode.row][startNode.col].isVisited = true;
+
   while (openSet.length > 0) {
     //get minimum
     var winner = 0;
@@ -57,6 +57,7 @@ export function astar(grid, startNode, finishNode) {
             openSet.push(grid[adjx][adjy]);
           }
           grid[adjx][adjy].isVisited = true;
+
           grid[adjx][adjy].h = heuristic(grid[adjx][adjy], finishNode);
           grid[adjx][adjy].f = grid[adjx][adjy].g + grid[adjx][adjy].h;
           grid[adjx][adjy].previousNode = current;
