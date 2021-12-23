@@ -8,3 +8,4 @@
 6. Dijkstra slways chooses the the node with minimum distance
 7. BFS just see the immediate neibhours and move to it
 8. You can also click on any empty grid element and drag the mouse to draw wall nodes and choose the algoithm to see how it works
+9. It also has a feature of random walls generation which will give you a wall at a node with the probability of 0.3
