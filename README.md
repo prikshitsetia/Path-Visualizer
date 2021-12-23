@@ -1,7 +1,7 @@
 # Path Visualizer
 
 1. This Project can help the users visualize shortest path finding algorithms
-2. It contains visualization for Dijkstras, BFS, and DFS (Not a Shortest Path) algorithms 
+2. It contains visualization for A* search, Dijkstras, BFS, and DFS (Not a Shortest Path) algorithms 
 3. It chooses the shortest possible path from start node (Green) to finish node (RED)
 4. Shortest path is denoted by yellow line
 5. The animaion helps to see how the algorithm chooses its neibhours or how it decides which node to go to next.
